@@ -15,20 +15,38 @@ function getUsers(req, res) {
 
 function postUser(req, res) {
     const { name, phoneNumber, email, kytNumber, passportNumber, country } = req.body
-    const originalUser = {
-        name,
-        phoneNumber,
-        email,
-        kytNumber,
-        passportNumber,
-        country
-    }
-    const user = new User(originalUser)
-    user.save(error => {
-        if(checkServerError(res, error)) return;
-        res.status(201).json(user)
-        console.log('user created successfully')
-    })
+    let originalUser = {}
+    User.findOne({"kytNumber":kytNumber})
+        .then(response => {
+            if(response == null) {
+                originalUser = {
+                    name,
+                    phoneNumber,
+                    email,
+                    kytNumber,
+                    passportNumber,
+                    country
+                }
+            } else {
+                originalUser = {
+                    name,
+                    phoneNumber,
+                    email,
+                    kytNumber: Math.floor(100000 + Math.random() * 900000),
+                    passportNumber,
+                    country
+                }
+            }
+            const user = new User(originalUser)
+            user.save(error => {
+                if(checkServerError(res, error)) return;
+                res.status(201).json(user)
+                console.log('user created successfully')
+            })
+        })
+        .catch(err => {
+            if(checkServerError(res, err)) return
+        })
 }
 
 function checkServerError(res, error) {
