@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const cors = require("cors");
 const mongoose = require('mongoose');
 
 require('dotenv').config()
@@ -16,6 +17,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
