@@ -21,9 +21,11 @@ app.use(cors());
 
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
+const verifyRouter = require('./routes/verify')
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/verify', verifyRouter);
 
 const port = process.env.PORT || 5000;
 

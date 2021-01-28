@@ -25,6 +25,10 @@ const userSchema = new Schema({
     country: {
         type: String,
         required: true
+    },
+    tests: {
+        type: Array,
+        required: false
     }
 }, {
     collection: 'Users'
