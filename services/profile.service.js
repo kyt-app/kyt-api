@@ -5,7 +5,6 @@ function getProfile(req, res) {
         if(err) { 
             console.log(err) 
         }
-        console.log(user)
         const response = {
             "name": user[0].name,
             "pfp": "https://i.imgur.com/twPSMdV.jpg",

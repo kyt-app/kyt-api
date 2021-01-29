@@ -16,6 +16,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
@@ -23,11 +24,13 @@ const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const verifyRouter = require('./routes/verify')
 const profileRouter = require('./routes/profile')
+const qrcodeRouter = require('./routes/qrcode')
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/verify', verifyRouter);
 app.use('/profile', profileRouter);
+app.use('/qrcode', qrcodeRouter);
 
 const port = process.env.PORT || 5000;
 
