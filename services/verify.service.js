@@ -41,30 +41,60 @@ function analyzeText(req, res) {
             commonWordsCount += 1
           }
         }
+        const testDetails = {
+          "testName": testName,
+          "timestamp": timestamp,
+          "status": ""
+        }
         if(commonWordsCount > 2) {
-          const testDetails = {
-            "testName": testName,
-            "timestamp": timestamp,
-            "status": "valid"
+          testDetails.status = "valid"
+        } else {
+          testDetails.status = "invalid"
+        }
+        User.find({ $and: [ { "tests.testName": testName }, { "email": email } ] }, (err, response) => {
+          if(err) {
+            console.log(err)
           }
-          User.findOneAndUpdate({"email":email}, { $push: { "tests": testDetails} },
-            (err, succ) => {
+          if(response.length == 0) {
+            User.findOneAndUpdate({"email":email}, { $push: { "tests": testDetails} },
+                (err, succ) => {
+                  if(err) {
+                    console.log(err)
+                  } else {
+                    if(testDetails.status == "valid") {
+                      res.json({
+                        "boolean": true,
+                        "message": "valid report"
+                      });
+                    } else {
+                      res.json({
+                        "boolean": false,
+                        "message": "invalid report"
+                      })
+                    }
+                  }
+                }
+              ,{ useFindAndModify: false })
+          } else {
+            User.updateOne({ "email": email, "tests.testName": testName }, { $set: { "tests.$.status": testDetails.status, "tests.$.timestamp": testDetails.timestamp } }, (err, response) => {
               if(err) {
                 console.log(err)
-              } else {
+              }
+              if(testDetails.status == "valid") {
                 res.json({
                   "boolean": true,
                   "message": "valid report"
                 });
+              } else {
+                res.json({
+                  "boolean": false,
+                  "message": "invalid report"
+                })
               }
-            }
-          ,{ useFindAndModify: false })
-        } else {
-          res.json({
-            "boolean": false,
-            "message": "invalid report"
-          })
-        }
+            })
+          }
+        })
+        
     })
     .catch(function (error) {
         console.log(error);
@@ -75,3 +105,6 @@ function analyzeText(req, res) {
 module.exports = {
     analyzeText
 }
+
+
+
