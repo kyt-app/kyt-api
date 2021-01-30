@@ -25,12 +25,14 @@ const usersRouter = require('./routes/users')
 const verifyRouter = require('./routes/verify')
 const profileRouter = require('./routes/profile')
 const qrcodeRouter = require('./routes/qrcode')
+const testsRouter = require('./routes/tests')
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/verify', verifyRouter);
 app.use('/profile', profileRouter);
 app.use('/qrcode', qrcodeRouter);
+app.use('/tests', testsRouter);
 
 const port = process.env.PORT || 5000;
 
