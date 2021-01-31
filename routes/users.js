@@ -9,4 +9,8 @@ router.post('/register',(req, res) => {
 	userService.postUser(req, res)
 })
 
+router.get('/register/checkpassport',(req, res) => {
+	userService.checkPassport(req, res)
+})
+
 module.exports = router;

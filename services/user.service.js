@@ -49,6 +49,20 @@ function postUser(req, res) {
         })
 }
 
+function checkPassport(req, res) {
+    const { passportNumber } = req.query
+    User.find({"passportNumber":passportNumber}, (err, response) => {
+        if(err) {
+            console.log(err)
+        }
+        if(response.length == 0) {
+            res.send("valid")
+        } else {
+            res.send("invalid")
+        }
+    })
+}
+
 function checkServerError(res, error) {
     if(error) {
         res.status(500).send(error);
@@ -58,5 +72,6 @@ function checkServerError(res, error) {
 
 module.exports = { 
     getUsers,
-    postUser
+    postUser,
+    checkPassport
 }
