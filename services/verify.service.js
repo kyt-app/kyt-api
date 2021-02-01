@@ -10,7 +10,7 @@ const commonWords = ["SARS COV", "SARS-COV", "Negative results", "patient histor
                       "possibility of SARS", "insufficient RNA specific"]
 
 async function analyzeText(req, res) {
-    const { text, email, testName, timestamp } = req.body
+    const { text, email, testName, timestamp, imageUrl } = req.body
     
     User.find({"email":email}, async (err, user) => {
       if (err) {
@@ -88,7 +88,8 @@ async function analyzeText(req, res) {
                     const testDetails = {
                       "testName": testName,
                       "timestamp": timestamp,
-                      "status": ""
+                      "status": "",
+                      "imageUrl": imageUrl
                     }
                     if(commonWordsCount > 2) {
                       testDetails.status = "valid"
@@ -120,7 +121,7 @@ async function analyzeText(req, res) {
                             }
                           ,{ useFindAndModify: false })
                       } else {
-                        User.updateOne({ "email": email, "tests.testName": testName }, { $set: { "tests.$.status": testDetails.status, "tests.$.timestamp": testDetails.timestamp } }, (err, response) => {
+                        User.updateOne({ "email": email, "tests.testName": testName }, { $set: { "tests.$.status": testDetails.status, "tests.$.timestamp": testDetails.timestamp, "tests.$.imageUrl": testDetails.imageUrl } }, (err, response) => {
                           if(err) {
                             console.log(err)
                           }
@@ -147,7 +148,8 @@ async function analyzeText(req, res) {
                 const testDetails = {
                   "testName": testName,
                   "timestamp": timestamp,
-                  "status": "invalid"
+                  "status": "invalid",
+                  "imageUrl": imageUrl
                 }
                 User.findOneAndUpdate({"email":email}, { $push: { "tests": testDetails} },
                   (err, succ) => {

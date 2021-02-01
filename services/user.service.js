@@ -14,7 +14,7 @@ function getUsers(req, res) {
 }
 
 function postUser(req, res) {
-    const { name, phoneNumber, email, kytNumber, passportNumber, country } = req.body
+    const { name, phoneNumber, email, kytNumber, passportNumber, country, pfpUrl } = req.body
     let originalUser = {}
     User.findOne({"kytNumber":kytNumber})
         .then(response => {
@@ -25,7 +25,8 @@ function postUser(req, res) {
                     email,
                     kytNumber,
                     passportNumber,
-                    country
+                    country,
+                    pfpUrl
                 }
             } else {
                 originalUser = {
@@ -34,7 +35,8 @@ function postUser(req, res) {
                     email,
                     kytNumber: Math.floor(100000 + Math.random() * 900000),
                     passportNumber,
-                    country
+                    country,
+                    pfpUrl
                 }
             }
             const user = new User(originalUser)

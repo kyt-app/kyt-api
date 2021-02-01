@@ -29,6 +29,11 @@ const userSchema = new Schema({
     tests: {
         type: Array,
         required: false
+    },
+    pfpUrl: {
+        type: String,
+        required: false,
+        default: "https://i.imgur.com/twPSMdV.jpg"
     }
 }, {
     collection: 'Users'
