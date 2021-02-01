@@ -56,9 +56,9 @@ function checkPassport(req, res) {
             console.log(err)
         }
         if(response.length == 0) {
-            res.send("valid")
+            res.send({"boolean":false})
         } else {
-            res.send("invalid")
+            res.send({"boolean":true})
         }
     })
 }
