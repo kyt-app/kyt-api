@@ -28,6 +28,17 @@ function updateStatus(req, res) {
     })
 }
 
+function updateProfile(req, res) {
+    const { email, phoneNumber, pfpUrl } = req.body
+    User.updateOne({"email": email}, { $set: { "phoneNumber": phoneNumber , "pfpUrl": pfpUrl }}, (err, response) => {
+        if(err) {
+            console.log(err)
+        }
+        res.send("profile updated")
+    })
+}   
+
 module.exports = {
-    updateStatus
+    updateStatus,
+    updateProfile
 }

@@ -5,4 +5,8 @@ router.get('/status', (req, res) => {
 	updateService.updateStatus(req, res)
 });
 
+router.post('/profile', (req, res) => {
+	updateService.updateProfile(req, res)
+});
+
 module.exports = router;

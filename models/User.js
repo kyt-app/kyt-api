@@ -33,7 +33,7 @@ const userSchema = new Schema({
     pfpUrl: {
         type: String,
         required: false,
-        default: "https://i.imgur.com/twPSMdV.jpg"
+        default: "https://i.imgur.com/XYX9Mtm.png"
     }
 }, {
     collection: 'Users'
