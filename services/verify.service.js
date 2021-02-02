@@ -151,11 +151,35 @@ async function analyzeText(req, res) {
                   "status": "invalid",
                   "imageUrl": imageUrl
                 }
-                User.findOneAndUpdate({"email":email}, { $push: { "tests": testDetails} },
-                  (err, succ) => {
-                    if(err) {
-                      console.log(err)
-                    } else {
+                User.find({ $and: [ { "tests.testName": testName }, { "email": email } ] }, (err, response) => {
+                  if(err) {
+                    console.log(err)
+                  }
+                  if(response.length == 0) {
+                    User.findOneAndUpdate({"email":email}, { $push: { "tests": testDetails} },
+                        (err, succ) => {
+                          if(err) {
+                            console.log(err)
+                          } else {
+                            if(testDetails.status == "valid") {
+                              res.json({
+                                "boolean": true,
+                                "message": "valid report"
+                              });
+                            } else {
+                              res.json({
+                                "boolean": false,
+                                "message": "invalid report"
+                              })
+                            }
+                          }
+                        }
+                      ,{ useFindAndModify: false })
+                  } else {
+                    User.updateOne({ "email": email, "tests.testName": testName }, { $set: { "tests.$.status": testDetails.status, "tests.$.timestamp": testDetails.timestamp, "tests.$.imageUrl": testDetails.imageUrl } }, (err, response) => {
+                      if(err) {
+                        console.log(err)
+                      }
                       if(testDetails.status == "valid") {
                         res.json({
                           "boolean": true,
@@ -167,9 +191,9 @@ async function analyzeText(req, res) {
                           "message": "invalid report"
                         })
                       }
-                    }
+                    })
                   }
-                ,{ useFindAndModify: false })
+                })
               }
           })
           })
