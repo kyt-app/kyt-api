@@ -17,7 +17,7 @@ function renderTemplate(req, res) {
         }
         const context = {
             "name": user[0].name,
-            "pfp": "https://i.imgur.com/twPSMdV.jpg",
+            "pfp": user[0].pfpUrl,
             "tests": user[0].tests
         }
         res.render('profile', context)
