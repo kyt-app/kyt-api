@@ -10,9 +10,9 @@ const commonWords = ["SARS COV", "SARS-COV", "Negative results", "patient histor
                       "possibility of SARS", "insufficient RNA specific"]
 
 async function analyzeText(req, res) {
-    const { text, email, testName, timestamp, imageUrl } = req.body
+    const { text, authToken, testName, timestamp, imageUrl } = req.body
     
-    User.find({"email":email}, async (err, user) => {
+    User.find({"authToken":authToken}, async (err, user) => {
       if (err) {
         console.log(err)
       }
@@ -96,12 +96,12 @@ async function analyzeText(req, res) {
                     } else {
                       testDetails.status = "invalid"
                     }
-                    User.find({ $and: [ { "tests.testName": testName }, { "email": email } ] }, (err, response) => {
+                    User.find({ $and: [ { "tests.testName": testName }, { "authToken": authToken } ] }, (err, response) => {
                       if(err) {
                         console.log(err)
                       }
                       if(response.length == 0) {
-                        User.findOneAndUpdate({"email":email}, { $push: { "tests": testDetails} },
+                        User.findOneAndUpdate({"authToken":authToken}, { $push: { "tests": testDetails} },
                             (err, succ) => {
                               if(err) {
                                 console.log(err)
@@ -121,7 +121,7 @@ async function analyzeText(req, res) {
                             }
                           ,{ useFindAndModify: false })
                       } else {
-                        User.updateOne({ "email": email, "tests.testName": testName }, { $set: { "tests.$.status": testDetails.status, "tests.$.timestamp": testDetails.timestamp, "tests.$.imageUrl": testDetails.imageUrl } }, (err, response) => {
+                        User.updateOne({ "authToken": authToken, "tests.testName": testName }, { $set: { "tests.$.status": testDetails.status, "tests.$.timestamp": testDetails.timestamp, "tests.$.imageUrl": testDetails.imageUrl } }, (err, response) => {
                           if(err) {
                             console.log(err)
                           }
@@ -151,12 +151,12 @@ async function analyzeText(req, res) {
                   "status": "invalid",
                   "imageUrl": imageUrl
                 }
-                User.find({ $and: [ { "tests.testName": testName }, { "email": email } ] }, (err, response) => {
+                User.find({ $and: [ { "tests.testName": testName }, { "authToken": authToken } ] }, (err, response) => {
                   if(err) {
                     console.log(err)
                   }
                   if(response.length == 0) {
-                    User.findOneAndUpdate({"email":email}, { $push: { "tests": testDetails} },
+                    User.findOneAndUpdate({"authToken":authToken}, { $push: { "tests": testDetails} },
                         (err, succ) => {
                           if(err) {
                             console.log(err)
@@ -176,7 +176,7 @@ async function analyzeText(req, res) {
                         }
                       ,{ useFindAndModify: false })
                   } else {
-                    User.updateOne({ "email": email, "tests.testName": testName }, { $set: { "tests.$.status": testDetails.status, "tests.$.timestamp": testDetails.timestamp, "tests.$.imageUrl": testDetails.imageUrl } }, (err, response) => {
+                    User.updateOne({ "authToken": authToken, "tests.testName": testName }, { $set: { "tests.$.status": testDetails.status, "tests.$.timestamp": testDetails.timestamp, "tests.$.imageUrl": testDetails.imageUrl } }, (err, response) => {
                       if(err) {
                         console.log(err)
                       }

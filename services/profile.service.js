@@ -1,7 +1,7 @@
 const User = require('../models/User')
 
 function getProfile(req, res) {
-    User.find({"email":req.query.email}, (err, user) => {
+    User.find({"authToken":req.query.authToken}, (err, user) => {
         if(err) { 
             console.log(err) 
         }

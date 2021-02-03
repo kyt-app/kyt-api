@@ -1,7 +1,7 @@
 const User = require('../models/User')
 
 function updateStatus(req, res) {
-    User.find({"email": req.query.email}, (err, user) => {
+    User.find({"authToken": req.query.authToken}, (err, user) => {
         if(err) { 
             console.log(err) 
         }
@@ -19,9 +19,9 @@ function updateStatus(req, res) {
                 if(user[0].tests[i].status == "invalid") {
                     response = "invalid"
                 }
-                User.updateOne({ "email": req.query.email, "tests.testName": user[0].tests[i].testName }, { $set: { "tests.$.status": response } }, (err, resp) => {
+                User.updateOne({ "authToken": req.query.authToken, "tests.testName": user[0].tests[i].testName }, { $set: { "tests.$.status": response } }, (err, resp) => {
                     if(err) {
-                    console.log(err)
+                        console.log(err)
                     }
                 })
             }
@@ -31,8 +31,8 @@ function updateStatus(req, res) {
 }
 
 function updateProfile(req, res) {
-    const { email, phoneNumber, pfpUrl } = req.body
-    User.updateOne({"email": email}, { $set: { "phoneNumber": phoneNumber , "pfpUrl": pfpUrl }}, (err, response) => {
+    const { authToken, phoneNumber, pfpUrl } = req.body
+    User.updateOne({"authToken": authToken}, { $set: { "phoneNumber": phoneNumber , "pfpUrl": pfpUrl }}, (err, response) => {
         if(err) {
             console.log(err)
         }

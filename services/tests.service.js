@@ -2,8 +2,8 @@ const { response } = require('express')
 const User = require('../models/User')
 
 function getTestDetails(req, res) {
-    const { email, testName } = req.query
-    User.findOne({"email":email}, (err, user) => {
+    const { authToken, testName } = req.query
+    User.findOne({"authToken":authToken}, (err, user) => {
         if(err) {
             console.log(err)
         }
@@ -18,8 +18,8 @@ function getTestDetails(req, res) {
 }
 
 function checkTestName(req, res) {
-    const { email, testName } = req.query
-    User.find({ $and: [ { "tests.testName": testName }, { "email": email } ] }, (err, response) => {
+    const { authToken, testName } = req.query
+    User.find({ $and: [ { "tests.testName": testName }, { "authToken": authToken } ] }, (err, response) => {
         if(err) {
             console.log(err)
         }
@@ -32,8 +32,8 @@ function checkTestName(req, res) {
 }
 
 function deleteTest(req, res) {
-    const { email, testName } = req.body
-    User.updateOne({"email": email}, { $pull: { "tests": { "testName": testName } } }, (err, response) => {
+    const { authToken, testName } = req.body
+    User.updateOne({"authToken": authToken}, { $pull: { "tests": { "testName": testName } } }, (err, response) => {
         if(err) {
             console.log(err)
         }
