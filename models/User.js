@@ -34,6 +34,10 @@ const userSchema = new Schema({
         type: String,
         required: false,
         default: "https://i.imgur.com/XYX9Mtm.png"
+    },
+    authToken: {
+        type: String,
+        required: true
     }
 }, {
     collection: 'Users'
