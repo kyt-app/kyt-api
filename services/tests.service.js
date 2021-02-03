@@ -17,6 +17,20 @@ function getTestDetails(req, res) {
     })
 }
 
+function checkTestName(req, res) {
+    const { email, testName } = req.query
+    User.find({ $and: [ { "tests.testName": testName }, { "email": email } ] }, (err, response) => {
+        if(err) {
+            console.log(err)
+        }
+        if(response.length == 0) {
+            res.send({"boolean":false})
+        } else {
+            res.send({"boolean":true})
+        }
+    })
+}
+
 function deleteTest(req, res) {
     const { email, testName } = req.body
     User.updateOne({"email": email}, { $pull: { "tests": { "testName": testName } } }, (err, response) => {
@@ -29,5 +43,6 @@ function deleteTest(req, res) {
 
 module.exports = {
     getTestDetails,
+    checkTestName,
     deleteTest
 }
