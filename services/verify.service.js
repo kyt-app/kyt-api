@@ -90,7 +90,7 @@ async function analyzeText(req, res) {
                       "status": "",
                       "imageUrl": imageUrl
                     }
-                    if(commonWordsCount > 2) {
+                    if(commonWordsCount > 1) {
                       testDetails.status = "valid"
                     } else {
                       testDetails.status = "invalid"
