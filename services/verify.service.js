@@ -88,7 +88,9 @@ async function analyzeText(req, res) {
                       "testName": testName,
                       "timestamp": timestamp,
                       "status": "",
-                      "imageUrl": imageUrl
+                      "imageUrl": imageUrl,
+                      "keyPhrases": keyPhrasesArray,
+                      "commonWords": commonWords
                     }
                     if(commonWordsCount > 2) {
                       testDetails.status = "valid"
@@ -148,7 +150,8 @@ async function analyzeText(req, res) {
                   "testName": testName,
                   "timestamp": timestamp,
                   "status": "invalid",
-                  "imageUrl": imageUrl
+                  "imageUrl": imageUrl,
+                  "PIIcheck":"failed"
                 }
                 User.find({ $and: [ { "tests.testName": testName }, { "authToken": authToken } ] }, (err, response) => {
                   if(err) {
