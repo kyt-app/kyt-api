@@ -151,7 +151,9 @@ async function analyzeText(req, res) {
                   "timestamp": timestamp,
                   "status": "invalid",
                   "imageUrl": imageUrl,
-                  "PIIcheck":"failed"
+                  "PIIcheck":"failed",
+                  "postData": text,
+                  "strippedResults": strippedResults
                 }
                 User.find({ $and: [ { "tests.testName": testName }, { "authToken": authToken } ] }, (err, response) => {
                   if(err) {
