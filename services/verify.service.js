@@ -1,13 +1,12 @@
 const axios = require('axios');
 const User = require('../models/User')
 
-const commonWords = ["SARS COV", "SARS-COV", "Negative results", "patient history", 
-                      "Positive results", "bacterial infection", "co-infection", "RNA",
-                      "acute phase of infection", "viral load", "RNA specific",
-                      "SARS-CoV", "RT - PCR","epidemiological information", 
-                      "sole basis", "viruses", "test result", "possibility of Covid",
-                      "fresh sample", "repeat sample", "Quality of sample",
-                      "possibility of SARS", "insufficient RNA specific"]
+const commonWords = ["sars cov", "sars-cov", "negative results", "patient history", "positive results", "bacterial infection", 
+                    "co-infection", "rna", "acute phase of infection", "viral load", "rna specific", "sars-cov", "rt - pcr", "epidemiological information", 
+                    "sole basis", "viruses", "test result", "possibility of covid", "fresh sample", "repeat sample", "quality of sample", "possibility of sars", 
+                    "insufficient rna specific", "pfizer", "covid", "covid-19", "cdc", "serum", "institute",
+                     "covid19", "biontech", "covishield", "vaccine", "vaccination", "bharat", "biotech", "covaxin"]
+
 
 async function analyzeText(req, res) {
     const { text, authToken, testName, timestamp, imageUrl } = req.body
@@ -81,7 +80,7 @@ async function analyzeText(req, res) {
                     const keyPhrasesArray = response.data.documents[0].keyPhrases
                     let commonWordsCount = 0
                     for (let i=0;i<keyPhrasesArray.length;i++) {
-                      if(commonWords.includes(keyPhrasesArray[i])) {
+                      if(commonWords.includes(keyPhrasesArray[i].toLowerCase())) {
                         commonWordsCount += 1
                       }
                     }
