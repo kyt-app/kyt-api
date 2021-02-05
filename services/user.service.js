@@ -16,14 +16,14 @@ function getUsers(req, res) {
 function postUser(req, res) {
     const { name, phoneNumber, email, kytNumber, passportNumber, country, pfpUrl, authToken } = req.body
     let originalUser = {}
-    User.findOne({"kytNumber":kytNumber})
+    User.findOne({"kytNumber":Number(kytNumber)})
         .then(response => {
             if(response == null) {
                 originalUser = {
                     name,
                     phoneNumber,
                     email,
-                    kytNumber,
+                    kytNumber: Number(kytNumber),
                     passportNumber,
                     country,
                     pfpUrl,
