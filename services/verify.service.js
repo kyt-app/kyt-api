@@ -4,7 +4,7 @@ const User = require('../models/User')
 const commonWords = ["sars cov", "sars-cov", "negative results", "patient history", "positive results", "bacterial infection", 
                     "co-infection", "rna", "acute phase of infection", "viral load", "rna specific", "sars-cov", "rt - pcr", "epidemiological information", 
                     "sole basis", "viruses", "test result", "possibility of covid", "fresh sample", "repeat sample", "quality of sample", "possibility of sars", 
-                    "insufficient rna specific", "pfizer", "covid", "covid-19", "cdc", "serum", "institute", "medical information cdc",
+                    "insufficient rna specific", "pfizer", "covid", "covid-19", "cdc", "serum", "institute", "medical information cdc", "dose covid", "patient number", 
                      "covid19", "biontech", "covishield", "vaccine", "vaccination", "bharat", "biotech", "covaxin", "medical record", "vaccination record card", "vaccines"]
 
 
@@ -90,9 +90,9 @@ async function analyzeText(req, res) {
                       "status": "",
                       "imageUrl": imageUrl,
                       "keyPhrases": keyPhrasesArray,
-                      "commonWords": commonWords
+                      "commonWordsCount": commonWordsCount
                     }
-                    if(commonWordsCount > 2) {
+                    if(commonWordsCount > 1) {
                       testDetails.status = "valid"
                     } else {
                       testDetails.status = "invalid"
