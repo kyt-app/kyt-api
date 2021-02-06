@@ -1,3 +1,4 @@
+const axios = require('axios');
 const User = require('../models/User')
 
 function updateStatus(req, res) {
@@ -32,12 +33,34 @@ function updateStatus(req, res) {
 
 function updateProfile(req, res) {
     const { authToken, phoneNumber, pfpUrl } = req.body
-    User.updateOne({"authToken": authToken}, { $set: { "phoneNumber": phoneNumber , "pfpUrl": pfpUrl }}, (err, response) => {
-        if(err) {
-            console.log(err)
-        }
-        res.send("profile updated")
-    })
+    const data = {
+        "url": pfpUrl
+    }
+    const config = {
+        method: 'post',
+        url: 'https://kyt-face-api.cognitiveservices.azure.com/face/v1.0/detect?returnFaceId=true&detectionModel=detection_02',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Ocp-Apim-Subscription-Key': process.env.AZURE_FACE_API_KEY 
+        },
+        data : data
+    };
+    axios(config)
+        .then(function (response) {
+            if (response.data.length == 0) {
+                res.send("invalid picture")
+            } else {
+                User.updateOne({"authToken": authToken}, { $set: { "phoneNumber": phoneNumber , "pfpUrl": pfpUrl }}, (err, response) => {
+                    if(err) {
+                        console.log(err)
+                    }
+                    res.send("profile updated")
+                })
+            }
+        })
+        .catch(function (error) {
+            console.log(error)
+        });
 }   
 
 module.exports = {
