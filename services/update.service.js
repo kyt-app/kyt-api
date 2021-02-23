@@ -7,6 +7,7 @@ function updateStatus(req, res) {
             console.log(err) 
         }
         let response = ""
+        let archived = false
         for(let i=0; i < user[0].tests.length; i++) {
             if(!user[0].tests[i].testName.includes("vaccine")) {
                 var newDate = new Date(user[0].tests[i].timestamp).getTime(); 
@@ -14,13 +15,15 @@ function updateStatus(req, res) {
                 var diff = Math.round((((currentDate-newDate)/1000)/60)/60);
                 if(diff >= 72) {
                     response = "invalid"
+                    archived = true
                 } else {
                     response = "valid"
+                    archived = false
                 }
                 if(user[0].tests[i].status == "invalid") {
                     response = "invalid"
                 }
-                User.updateOne({ "authToken": req.query.authToken, "tests.testName": user[0].tests[i].testName }, { $set: { "tests.$.status": response } }, (err, resp) => {
+                User.updateOne({ "authToken": req.query.authToken, "tests.testName": user[0].tests[i].testName }, { $set: { "tests.$.status": response, "tests.$.archived": archived  } }, (err, resp) => {
                     if(err) {
                         console.log(err)
                     }

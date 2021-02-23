@@ -90,6 +90,7 @@ async function analyzeText(req, res) {
                       "status": "",
                       "imageUrl": imageUrl,
                       "keyPhrases": keyPhrasesArray,
+                      "archived": false,
                       "commonWordsCount": commonWordsCount
                     }
                     if(commonWordsCount > 1) {
@@ -150,6 +151,7 @@ async function analyzeText(req, res) {
                   "testName": testName,
                   "timestamp": timestamp,
                   "status": "invalid",
+                  "archived": false,
                   "imageUrl": imageUrl,
                   "PIIcheck":"failed",
                   "postData": text,
