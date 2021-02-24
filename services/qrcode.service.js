@@ -15,10 +15,17 @@ function renderTemplate(req, res) {
         if(err) { 
             console.log(err) 
         }
+        const tests = user[0].tests
+        const updatedTests = []
+        for(let i = 0; i < tests.length; i++) {
+            if(tests[i].archived == false) {
+                updatedTests.push(tests[i])
+            }
+        } 
         const context = {
             "name": user[0].name,
             "pfp": user[0].pfpUrl,
-            "tests": user[0].tests
+            "tests": updatedTests
         }
         res.render('profile', context)
     })
